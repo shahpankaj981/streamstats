@@ -18,9 +18,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'twitch_id',
+        'username',
         'email',
-        'password',
+        'twitch_token',
+        'twitch_refresh_token',
+        'expires_in'
     ];
 
     /**
@@ -29,7 +32,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 

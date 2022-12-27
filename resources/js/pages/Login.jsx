@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import { useSearchParams } from 'react-router-dom';
 
 
 const theme = createTheme();
@@ -20,36 +21,9 @@ const redirect_uri="https://id.twitch.tv/oauth2/authorize"+
 "?response_type=code" +
 "&client_id=ekez4ci808630jf0s6sffby8lninv5" +
 "&redirect_uri=http://localhost:8000/callback" +
-"&scope=user:read:email" +
-"&state=c3ab8aa609ea11e793ae92361f002671"
+"&scope=user:read:email";
 
 export default function Login() {
-    const [accessToken, setAccessToken] = React.useState(null);
-
-    React.useEffect(() => {
-    let urlHash = document.location.hash;
-    if(urlHash) {
-        if(urlHash.includes("access_token")) {
-            let token = urlHash.slice(urlHash.indexOf("access_token")+13, urlHash.indexOf("&"));
-            setAccessToken(token);
-            handleCallback(token);
-        } else if(urlHash.includes("error")) {
-            alert("please authorize the app with Twitch!");
-        }
-    }
-  }, [document.location.hash]);
-
-  const handleCallback = (token) => {
-    axios.post(`/api/login`, {access_token: token})
-    .then(res => {
-
-    })
-    .catch(err => {
-
-    })
-
-  }
-
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
