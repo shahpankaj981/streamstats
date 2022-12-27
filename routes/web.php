@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/login', 'Api\LoginController@login');
+Route::get('callback', 'Api\LoginController@callback');
+
 Route::get('/{any?}', function () {
     return view('welcome');
 })->where('any', '.*');
