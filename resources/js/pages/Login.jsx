@@ -13,17 +13,27 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-import { useSearchParams } from 'react-router-dom';
-
+import { useSelector } from 'react-redux'
+import { Navigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 const redirect_uri="https://id.twitch.tv/oauth2/authorize"+
 "?response_type=code" +
 "&client_id=ekez4ci808630jf0s6sffby8lninv5" +
-"&redirect_uri=http://localhost:8000/callback" +
+"&redirect_uri=http://localhost:8000/api/callback" +
 "&scope=user:read:email";
 
 export default function Login() {
+  const isLoggedIn = useSelector((state) => state.auth.token);
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if(!!isLoggedIn) {
+      navigate('/');
+    }
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">

@@ -6,22 +6,12 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Button } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux'
+import { logout } from '../store/authSlice';
 
 export default function Navbar() {
-  const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const auth = useSelector((state) => !!state.auth.token);
+  const dispatch = useDispatch();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -43,6 +33,7 @@ export default function Navbar() {
             <div>
               <Button
                 type="button"
+                onClick={() => dispatch(logout())}
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}>Logout</Button>

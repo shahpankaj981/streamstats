@@ -30,6 +30,6 @@ class LoginController extends Controller
             'expires_in' => Carbon::now()->addHour()
         ]);
 
-        return redirect("/?token={$user->twitch_token}");
+        return redirect("/callback?token={$user->twitch_token}");
     }
 }

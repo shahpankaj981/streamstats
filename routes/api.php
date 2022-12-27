@@ -20,5 +20,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace("Api")->group(function() {
     Route::get('login', 'LoginController@login');
-    Route::post('callback', 'LoginController@callback');
+    Route::get('callback', 'LoginController@callback');
 });
