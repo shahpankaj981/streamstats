@@ -21,4 +21,6 @@ use Illuminate\Support\Facades\Route;
 Route::namespace("Api")->group(function() {
     Route::get('login', 'LoginController@login');
     Route::get('callback', 'LoginController@callback');
+    Route::get('user/details', 'UserController@show')->middleware('api.auth');
+    Route::get('stats', 'StatisticsController@show')->middleware('api.auth');
 });

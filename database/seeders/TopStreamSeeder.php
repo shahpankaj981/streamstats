@@ -1,0 +1,34 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use App\Services\TwitchService;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
+class TopStreamSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        DB::table('top_live_streams')->truncate();
+
+        $streams = app(TwitchService::class)->top100Streams();
+        
+        foreach($streams->data  as $stream) {
+            DB::table('top_live_streams')->insert([
+                'title' => $stream->title,
+                'game_id' => $stream->game_id,
+                'game_name' => $stream->game_name,
+                'no_of_viewers' => $stream->viewer_count,
+                'started_at' => Carbon::parse($stream->started_at)            
+            ]);
+        }
+    }
+}
