@@ -18,17 +18,21 @@ class TopStreamSeeder extends Seeder
     public function run()
     {
         DB::table('top_live_streams')->truncate();
+        $pageCursor=null;
 
-        $streams = app(TwitchService::class)->top100Streams();
+        for($i=1; $i<=10; $i++){
+            $streams = app(TwitchService::class)->top100Streams($pageCursor);
         
-        foreach($streams->data  as $stream) {
-            DB::table('top_live_streams')->insert([
-                'title' => $stream->title,
-                'game_id' => $stream->game_id,
-                'game_name' => $stream->game_name,
-                'no_of_viewers' => $stream->viewer_count,
-                'started_at' => Carbon::parse($stream->started_at)            
-            ]);
+            foreach($streams->data  as $stream) {
+                DB::table('top_live_streams')->insert([
+                    'title' => $stream->title,
+                    'game_id' => $stream->game_id,
+                    'game_name' => $stream->game_name,
+                    'no_of_viewers' => $stream->viewer_count,
+                    'started_at' => Carbon::parse($stream->started_at)            
+                ]);
+            }
+            $pageCursor = $streams->pagination->cursor;
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 
 class TwitchService
 {
@@ -45,9 +46,13 @@ class TwitchService
         $this->appAccessToken = $body->access_token;
     }
 
-    public function top100Streams()
+    public function top100Streams($pageCursor=null)
     {
-        $response = $this->apiCall('https://api.twitch.tv/helix/streams?first=100', 'GET', [
+        $url = "https://api.twitch.tv/helix/streams?first=100";
+        if($pageCursor) {
+            $url = "{$url}&after={$pageCursor}";
+        }
+        $response = $this->apiCall($url, 'GET', [
             'headers' => [
                 'Authorization' => "Bearer {$this->appAccessToken}",
                 'Client-Id' => $this->clientId,
@@ -56,5 +61,35 @@ class TwitchService
         ]);
 
         return json_decode($response->getBody()->getContents());
+    }
+
+    public function userStreams(User $user)
+    {
+        $url = "https://api.twitch.tv/helix/streams?first=100&user_login={$user->username}";
+        
+        $response = $this->apiCall($url, 'GET', [
+            'headers' => [
+                'Authorization' => "Bearer {$user->twitch_token}",
+                'Client-Id' => $this->clientId,
+                
+            ],
+        ]);
+
+        return json_decode($response->getBody()->getContents())->data;
+    }
+
+    public function topGames(User $user)
+    {
+        $url = "https://api.twitch.tv/helix/games/top?first=100";
+        
+        $response = $this->apiCall($url, 'GET', [
+            'headers' => [
+                'Authorization' => "Bearer {$user->twitch_token}",
+                'Client-Id' => $this->clientId,
+                
+            ],
+        ]);
+
+        return json_decode($response->getBody()->getContents())->data;
     }
 }

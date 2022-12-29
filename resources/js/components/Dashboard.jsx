@@ -19,18 +19,57 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { prepareApiCall } from "../utility";
+import MUIDataTable from "mui-datatables";
 
+const columns = [
+    {
+        name: "title",
+        label: "Title"
+   },
+   {
+        name: "game_name",
+        label: "Game Name",
+    },
+    {
+        name: "no_of_viewers",
+        label: "No. of Viewers",
+    },
+];
+
+const options = {
+    download: false,
+    filter: false,
+    filterType: '',
+    print: false,
+    viewColumns: false,
+    search: false,
+    selectableRowsHideCheckboxes: false,
+    selectableRowsHeader: false,
+    selectableRows: 'none'
+};
 export default function Dashboard() {
+    const [top100Streams, setTop100Streams] = React.useState([]);
+    let data = [
+        {title: "Joe James", game_name: "Test Corp", no_of_viewers: 2, started_at: "ASfdasd"},
+        
+       ];
     React.useEffect(() => {
         prepareApiCall('/api/stats')
         .then(res => {
-            console.log(res);
+            setTop100Streams(res.data.data.top_100_streams);
+            console.log(res.data.data);
+        })
+        .catch(err => {
+            console.log(err.response.status)
+            if(err.response.status == 400) {
+                //logout
+            }
         })
     }, []);
     return (
         <div className="row">
             <div className="col-md-6">
-                <Card sx={{ maxWidth: "100%" }}>
+                <Card>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                         Dashboard
@@ -45,6 +84,12 @@ export default function Dashboard() {
                         <Button size="small">Learn More</Button>
                     </CardActions>
                 </Card>
+                <MUIDataTable
+                    title={"Top 100 Streams"}
+                    data={top100Streams}
+                    columns={columns}
+                    options={options}
+                />
             </div>
         </div>
     );
