@@ -22,7 +22,7 @@ const redirect_uri="https://id.twitch.tv/oauth2/authorize"+
 "?response_type=code" +
 "&client_id=ekez4ci808630jf0s6sffby8lninv5" +
 "&redirect_uri=http://localhost:8000/api/callback" +
-"&scope=user:read:email";
+"&scope=user:read:email user:read:follows&scope=user:read:follows";
 
 export default function Login() {
   const isLoggedIn = useSelector((state) => state.auth.token);

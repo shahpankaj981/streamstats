@@ -65,7 +65,7 @@ class TwitchService
 
     public function userStreams(User $user)
     {
-        $url = "https://api.twitch.tv/helix/streams?first=100&user_login={$user->username}";
+        $url = "https://api.twitch.tv/helix/streams/followed?user_id={$user->twitch_id}";
         
         $response = $this->apiCall($url, 'GET', [
             'headers' => [

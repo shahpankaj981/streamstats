@@ -39,7 +39,6 @@ const columns = [
 const options = {
     download: false,
     filter: false,
-    filterType: '',
     print: false,
     viewColumns: false,
     search: false,
@@ -49,14 +48,13 @@ const options = {
 };
 export default function Dashboard() {
     const [top100Streams, setTop100Streams] = React.useState([]);
-    let data = [
-        {title: "Joe James", game_name: "Test Corp", no_of_viewers: 2, started_at: "ASfdasd"},
-        
-       ];
+    const [top100StreamsUserFollows, setTop100StreamsUserFollows] = React.useState([]);
+    
     React.useEffect(() => {
         prepareApiCall('/api/stats')
         .then(res => {
             setTop100Streams(res.data.data.top_100_streams);
+            setTop100StreamsUserFollows(res.data.data.top_1000_games_user_is_following);
             console.log(res.data.data);
         })
         .catch(err => {
@@ -87,6 +85,12 @@ export default function Dashboard() {
                 <MUIDataTable
                     title={"Top 100 Streams"}
                     data={top100Streams}
+                    columns={columns}
+                    options={options}
+                />
+                <MUIDataTable
+                    title={"Top 100 Streams User Follows"}
+                    data={top100StreamsUserFollows}
                     columns={columns}
                     options={options}
                 />

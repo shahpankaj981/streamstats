@@ -18,17 +18,13 @@ class StatisticsController extends Controller
 
     public function show(Request $request)
     {
-        // $data = $this->twitchService->top100Streams();
         $top100Streams = DB::table('top_live_streams')->take(100)->get();
-        // dd($top100Streams);
-        // $userStreams = $this->twitchService->userStreams($request->user);
-        // dd($userStreams);
-        // $topGames = $this->twitchService->topGames($request->user);
-        // $top1000GamesUserIsPartOf = DB::table('top_live_streams')->whereIn('game_id', collect($userStreams)->pluck('game_id'))->get();
-        // dd($top1000GamesUserIsPartOf);
+        $userFollowedStreams = $this->twitchService->userStreams($request->user);
+        $top1000GamesUserIsFollowing = DB::table('top_live_streams')->whereIn('game_id', collect($userFollowedStreams)->pluck('game_id'))->get();
 
         $data = [
             'top_100_streams' => $top100Streams,
+            'top_1000_games_user_is_following' => $top1000GamesUserIsFollowing
         ];
 
         return response()->json(['success' => true, 'data' => $data], 200);
