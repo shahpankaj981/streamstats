@@ -32,4 +32,14 @@ class LoginController extends Controller
 
         return redirect("/callback?token={$user->twitch_token}");
     }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user;
+        $user->update([
+            'twitch_token' => null,
+            'twitch_refresh_token' => null,
+            'expires_in' => null
+        ]);
+    }
 }

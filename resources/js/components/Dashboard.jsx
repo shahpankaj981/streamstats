@@ -49,6 +49,7 @@ const options = {
 export default function Dashboard() {
     const [top100Streams, setTop100Streams] = React.useState([]);
     const [top100StreamsUserFollows, setTop100StreamsUserFollows] = React.useState([]);
+    const dispatch = useDispatch();
     
     React.useEffect(() => {
         prepareApiCall('/api/stats')
@@ -59,8 +60,10 @@ export default function Dashboard() {
         })
         .catch(err => {
             console.log(err.response.status)
-            if(err.response.status == 400) {
-                //logout
+            if(err.response.status == 401) {
+                dispatch(logout());
+            } else {
+                alert("Something went wrong!!")
             }
         })
     }, []);

@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('username');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('twitch_token');
+            $table->string('twitch_token')->nullable();
             $table->datetime('expires_in')->nullable();
-            $table->string('twitch_refresh_token');
+            $table->string('twitch_refresh_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
