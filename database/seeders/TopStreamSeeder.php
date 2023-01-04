@@ -25,6 +25,7 @@ class TopStreamSeeder extends Seeder
         
             foreach($streams->data  as $stream) {
                 DB::table('top_live_streams')->insert([
+                    'channel_name' => $stream->user_name,
                     'title' => $stream->title,
                     'game_id' => $stream->game_id,
                     'game_name' => $stream->game_name,

@@ -35,6 +35,35 @@ const columns = [
         label: "No. of Viewers",
     },
 ];
+const gamesColumns = [
+    {
+        name: "game_id",
+        label: "Game ID"
+   },
+   {
+        name: "game_name",
+        label: "Game Name",
+    },
+    {
+        name: "stream_count",
+        label: "No. of Streamers",
+    },
+];
+
+const topGamesColumns = [
+    {
+        name: "game_id",
+        label: "Game ID"
+   },
+   {
+        name: "game_name",
+        label: "Game Name",
+    },
+    {
+        name: "view_count",
+        label: "No. of Viewers",
+    },
+];
 
 const options = {
     download: false,
@@ -49,6 +78,9 @@ const options = {
 export default function Dashboard() {
     const [top100Streams, setTop100Streams] = React.useState([]);
     const [top100StreamsUserFollows, setTop100StreamsUserFollows] = React.useState([]);
+    const [gamesWithStreamCount, setGamesWithStreamCount] = React.useState([]);
+    const [topGamesWithViewerCount, setTopGamesWithViewerCount] = React.useState([]);
+    const [medianNoOfViewers, setMedianNoOfViewers] = React.useState([]);
     const dispatch = useDispatch();
     
     React.useEffect(() => {
@@ -56,6 +88,9 @@ export default function Dashboard() {
         .then(res => {
             setTop100Streams(res.data.data.top_100_streams);
             setTop100StreamsUserFollows(res.data.data.top_1000_games_user_is_following);
+            setGamesWithStreamCount(res.data.data.games_by_stream_count);
+            setTopGamesWithViewerCount(res.data.data.top_games_by_viewer_count);
+            setMedianNoOfViewers(res.data.data.median_viewers);
             console.log(res.data.data);
         })
         .catch(err => {
@@ -85,6 +120,16 @@ export default function Dashboard() {
                         <Button size="small">Learn More</Button>
                     </CardActions>
                 </Card>
+                <Card>
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                        Median No. of Viewers for all stream
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            <h2>{medianNoOfViewers}</h2>
+                        </Typography>
+                    </CardContent>
+                </Card>
                 <MUIDataTable
                     title={"Top 100 Streams"}
                     data={top100Streams}
@@ -97,6 +142,20 @@ export default function Dashboard() {
                     columns={columns}
                     options={options}
                 />
+                <MUIDataTable
+                    title={"Games with their stream count"}
+                    data={gamesWithStreamCount}
+                    columns={gamesColumns}
+                    options={options}
+                />
+                <MUIDataTable
+                    title={"Top Games with their viewer count"}
+                    data={topGamesWithViewerCount}
+                    columns={topGamesColumns}
+                    options={options}
+                />
+
+
             </div>
         </div>
     );
