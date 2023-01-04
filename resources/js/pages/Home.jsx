@@ -40,11 +40,11 @@ export default function Home() {
             <Box
                 sx={{
                     bgcolor: 'background.paper',
-                    pt: 8,
-                    pb: 6,
+                    pt: 1,
+                    pb: 1,
                 }}
                 >
-                <Container maxWidth="sm">
+                <Container>
                     <Typography
                         component="h2"
                         variant="h3"

@@ -20,6 +20,7 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { prepareApiCall } from "../utility";
 import MUIDataTable from "mui-datatables";
+import Paper from '@mui/material/Paper';
 
 const columns = [
     {
@@ -80,7 +81,8 @@ export default function Dashboard() {
     const [top100StreamsUserFollows, setTop100StreamsUserFollows] = React.useState([]);
     const [gamesWithStreamCount, setGamesWithStreamCount] = React.useState([]);
     const [topGamesWithViewerCount, setTopGamesWithViewerCount] = React.useState([]);
-    const [medianNoOfViewers, setMedianNoOfViewers] = React.useState([]);
+    const [medianNoOfViewers, setMedianNoOfViewers] = React.useState("");
+    const [viewCountToTop1000, setviewCountToTop1000] = React.useState("");
     const dispatch = useDispatch();
     
     React.useEffect(() => {
@@ -91,6 +93,7 @@ export default function Dashboard() {
             setGamesWithStreamCount(res.data.data.games_by_stream_count);
             setTopGamesWithViewerCount(res.data.data.top_games_by_viewer_count);
             setMedianNoOfViewers(res.data.data.median_viewers);
+            setviewCountToTop1000(res.data.data.view_count_to_top_1000);
             console.log(res.data.data);
         })
         .catch(err => {
@@ -104,59 +107,87 @@ export default function Dashboard() {
     }, []);
     return (
         <div className="row">
-            <div className="col-md-6">
-                <Card>
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                        Dashboard
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                        Lizards are a widespread group of squamate reptiles, with over 6,000
-                        species, ranging across all continents except Antarctica
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Button size="small">Share</Button>
-                        <Button size="small">Learn More</Button>
-                    </CardActions>
-                </Card>
-                <Card>
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={4} lg={4}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 160,
+                  }}
+                >
+                  <div>
+                  <Typography gutterBottom variant="h5" component="div">
                         Median No. of Viewers for all stream
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                             <h2>{medianNoOfViewers}</h2>
                         </Typography>
-                    </CardContent>
-                </Card>
+                  </div>
+                </Paper>
+              </Grid>
+              
+              <Grid item xs={12} md={8} lg={8}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 160,
+                  }}
+                >
+                  <div>
+                  <Typography gutterBottom variant="h7" component="div">
+                        <b>No. of viewers the lowest viewer count stream that the logged in user is following need to gain in order to make it into the top 1000:</b>
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            <h2>{viewCountToTop1000}</h2>
+                        </Typography>
+                  </div>
+                </Paper>
+              </Grid>
+              
+            </Grid>
+          </Container>
+          <Container>
+            <Grid container spacing={1}>
+            <Grid item xs={12} md={6} lg={6}>
                 <MUIDataTable
-                    title={"Top 100 Streams"}
-                    data={top100Streams}
-                    columns={columns}
-                    options={options}
-                />
+                        title={"Games with their stream count"}
+                        data={gamesWithStreamCount}
+                        columns={gamesColumns}
+                        options={options}
+                    />
+              </Grid>
+              <Grid item xs={12} md={6} lg={6}>
                 <MUIDataTable
-                    title={"Top 100 Streams User Follows"}
-                    data={top100StreamsUserFollows}
-                    columns={columns}
-                    options={options}
-                />
+                        title={"Top Games with their viewer count"}
+                        data={topGamesWithViewerCount}
+                        columns={topGamesColumns}
+                        options={options}
+                    />
+              </Grid>
+              <Grid item xs={12} md={12} lg={12}>
                 <MUIDataTable
-                    title={"Games with their stream count"}
-                    data={gamesWithStreamCount}
-                    columns={gamesColumns}
-                    options={options}
-                />
+                        title={"Top 100 Streams"}
+                        data={top100Streams}
+                        columns={columns}
+                        options={options}
+                    />
+              </Grid>
+              <Grid item xs={12} md={12} lg={12}>
                 <MUIDataTable
-                    title={"Top Games with their viewer count"}
-                    data={topGamesWithViewerCount}
-                    columns={topGamesColumns}
-                    options={options}
-                />
-
-
-            </div>
+                        title={"Top 100 Streams User Follows"}
+                        data={top100StreamsUserFollows}
+                        columns={columns}
+                        options={options}
+                    />
+              </Grid>
+              
+            </Grid>
+          </Container>
         </div>
     );
 }
